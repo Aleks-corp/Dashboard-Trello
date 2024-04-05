@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  task-bd:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: board_bd
+    ports:
+      - "5432:5432"
