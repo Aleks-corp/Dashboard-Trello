@@ -31,12 +31,12 @@ export class ListController {
 
   @Patch(':id')
   @Bind(Param('id'))
-  async patchOne(@Param('id') id: string, @Body() newName: createListDto) {
-    const task = await this.listService.getListById(id);
-    if (task) {
-      return await this.listService.updateListById(id, newName.name);
+  async patchOne(@Param('id') id: string, @Body() newList: createListDto) {
+    const list = await this.listService.getListById(id);
+    if (list) {
+      return await this.listService.updateListById(id, newList.name);
     } else {
-      throw new NotFoundException('Task not found');
+      throw new NotFoundException('List not found');
     }
   }
 
@@ -45,9 +45,9 @@ export class ListController {
   async deleteOne(@Param('id') id: string): Promise<string> {
     const { affected } = await this.listService.deleteListById(id);
     if (affected) {
-      return 'Task deleted';
+      return 'List deleted';
     } else {
-      throw new NotFoundException('Task not found');
+      throw new NotFoundException('List not found');
     }
   }
 }
