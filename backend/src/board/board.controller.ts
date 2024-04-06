@@ -31,12 +31,12 @@ export class BoardController {
 
   @Patch(':id')
   @Bind(Param('id'))
-  async patchOne(@Param('id') id: string, @Body() newName: createBoardDto) {
-    const task = await this.boardService.getBoardById(id);
-    if (task) {
-      return await this.boardService.updateBoardById(id, newName.name);
+  async patchOne(@Param('id') id: string, @Body() newBoard: createBoardDto) {
+    const board = await this.boardService.getBoardById(id);
+    if (board) {
+      return await this.boardService.updateBoardById(id, newBoard.name);
     } else {
-      throw new NotFoundException('Task not found');
+      throw new NotFoundException('Board not found');
     }
   }
 
@@ -45,9 +45,9 @@ export class BoardController {
   async deleteOne(@Param('id') id: string): Promise<string> {
     const { affected } = await this.boardService.deleteBoardById(id);
     if (affected) {
-      return 'Task deleted';
+      return 'Board deleted';
     } else {
-      throw new NotFoundException('Task not found');
+      throw new NotFoundException('Board not found');
     }
   }
 }

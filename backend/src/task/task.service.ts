@@ -56,16 +56,9 @@ export class TaskService {
       task.list = list;
     }
 
-    // Обновите остальные поля задачи, если они указаны
-    if (newTask.name) {
-      task.name = newTask.name;
-    }
-    if (newTask.description) {
-      task.description = newTask.description;
-    }
-    if (newTask.priority) {
-      task.priority = newTask.priority;
-    }
+    newTask.name && (task.name = newTask.name);
+    newTask.description && (task.description = newTask.description);
+    newTask.priority && (task.priority = newTask.priority);
 
     await this.taskRepository.save(task);
     return task;
