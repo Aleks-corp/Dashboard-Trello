@@ -12,14 +12,14 @@ import {
 } from '@nestjs/common';
 import { ListService } from './list.service';
 import { List } from './list.entity';
-import { createListDto } from './list.dto';
+import { createListDto, updateListDto } from './list.dto';
 
 @Controller('lists')
 export class ListController {
   constructor(private readonly listService: ListService) {}
 
   @Get()
-  getBoards(): Promise<List[]> {
+  getLists(): Promise<List[]> {
     return this.listService.getLists();
   }
 
@@ -31,10 +31,10 @@ export class ListController {
 
   @Patch(':id')
   @Bind(Param('id'))
-  async patchOne(@Param('id') id: string, @Body() newList: createListDto) {
+  async patchOne(@Param('id') id: string, @Body() newList: updateListDto) {
     const list = await this.listService.getListById(id);
     if (list) {
-      return await this.listService.updateListById(id, newList.name);
+      return await this.listService.updateListById(id, newList);
     } else {
       throw new NotFoundException('List not found');
     }

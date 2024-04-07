@@ -28,7 +28,10 @@ export class BoardService {
   async updateBoardById(strId: string, newName: string): Promise<Board> {
     const id = Number(strId);
     await this.boardRepository.update(id, { name: newName });
-    return await this.boardRepository.findOne({ where: { id } });
+    return await this.boardRepository.findOne({
+      where: { id },
+      relations: ['lists', 'lists.tasks'],
+    });
   }
 
   async deleteBoardById(id: string) {

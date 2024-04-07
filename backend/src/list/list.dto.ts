@@ -8,3 +8,9 @@ export class createListDto {
   @IsNotEmpty({ message: 'Please Enter Board Name' })
   board: Board['name'];
 }
+
+export class updateListDto {
+  @IsNotEmpty({ message: 'Please Enter List Name' })
+  @IsString({ message: 'Please Enter Valid List Name' })
+  name: string;
+}
