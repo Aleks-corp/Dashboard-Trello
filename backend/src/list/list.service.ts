@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './list.entity';
-import { createListDto } from './list.dto';
+import { createListDto, updateListDto } from './list.dto';
 import { Board } from 'src/board/board.entity';
 
 @Injectable()
@@ -41,10 +41,13 @@ export class ListService {
     return await this.listRepository.findOne({ where: { id } });
   }
 
-  async updateListById(strId: string, newName: string): Promise<List> {
+  async updateListById(strId: string, newName: updateListDto): Promise<List> {
     const id = Number(strId);
-    await this.listRepository.update(id, { name: newName });
-    return await this.listRepository.findOne({ where: { id } });
+    await this.listRepository.update(id, { name: newName.name });
+    return await this.listRepository.findOne({
+      where: { id },
+      relations: ['board', 'tasks'],
+    });
   }
 
   async deleteListById(id: string) {

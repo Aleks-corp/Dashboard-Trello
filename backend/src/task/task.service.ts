@@ -39,13 +39,18 @@ export class TaskService {
 
   async getTaskById(strId: string): Promise<Task> {
     const id = Number(strId);
-    return await this.taskRepository.findOne({ where: { id } });
+    return await this.taskRepository.findOne({
+      where: { id },
+      relations: ['list'],
+    });
   }
 
   async updateTaskById(strId: string, newTask: updateTaskDto): Promise<Task> {
     const id = Number(strId);
-    const task = await this.taskRepository.findOne({ where: { id } });
-
+    const task = await this.taskRepository.findOne({
+      where: { id },
+      relations: ['list'],
+    });
     if (newTask.list) {
       const list = await this.listRepository.findOne({
         where: { name: newTask.list },
@@ -55,7 +60,6 @@ export class TaskService {
       }
       task.list = list;
     }
-
     newTask.name && (task.name = newTask.name);
     newTask.description && (task.description = newTask.description);
     newTask.priority && (task.priority = newTask.priority);
