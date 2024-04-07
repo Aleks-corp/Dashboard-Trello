@@ -1,0 +1,34 @@
+.Wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000010;
+  z-index: 5;
+}
+
+.TaskEditWrapper {
+  position: absolute;
+  top: -17px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 8px;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.HeaderButton {
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #21212170;
+  padding: 8px 16px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #242424;
+  background-color: #e1e1e1;
+}

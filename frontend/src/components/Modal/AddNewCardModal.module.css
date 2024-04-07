@@ -1,0 +1,60 @@
+.AddTaskContainer {
+  width: 750px;
+  height: 450px;
+}
+
+.TaskTitle {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.TaskTextBox {
+  display: flex;
+  margin-bottom: 28px;
+}
+
+.TaskText {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.TaskTextAccent {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.TaskInput {
+  width: 180px;
+  height: 25px;
+  border: 1px solid #212121;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.TaskTextArea {
+  width: 175px;
+  height: 120px;
+  border: 1px solid #212121;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.AddTaskBtn {
+  padding: 8px 16px;
+  border: 1px solid #212121;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+.SelectBox {
+  display: flex;
+  margin-left: 32px;
+  width: 200px;
+}
