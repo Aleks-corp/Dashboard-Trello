@@ -1,0 +1,41 @@
+.Wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000010;
+  z-index: 5;
+}
+
+.BoardEditWrapper {
+  position: absolute;
+  top: 24px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 8px;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.BoardEditButton {
+  background-color: #fff;
+  border: 1px solid #80808080;
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
+.HeaderButton {
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #21212170;
+  padding: 8px 16px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #242424;
+  background-color: #e1e1e1;
+}
