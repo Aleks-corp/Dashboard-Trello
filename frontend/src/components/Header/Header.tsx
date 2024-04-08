@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { fetchBoards } from "../../redux/boards/board.thunk";
 import { selectBoard, selectBoards } from "../../redux/selectors";
 import HeaderBoardSelect from "./HeaderSelect";
-import styles from "./Header.module.css";
 import BoardAddContainer from "./BoardAddContainer";
 import BoardEditContainer from "./BoardEditContainer";
 import ListAddContainer from "./ListAddContainer";
@@ -26,12 +25,12 @@ function Header() {
   const [isOpenAddList, setIsOpenAddList] = useState(false);
 
   return (
-    <header className={styles.HeaderContainer}>
-      <div className={styles.ButtonContainer}>
+    <header className="flex flex-wrap justify-between items-center w-full h-20 max-w-7xl my-0 mx-auto px-4 py-7">
+      <div className="flex items-center gap-2.5">
         {boards.length !== 0 && <HeaderBoardSelect boards={boards} />}
         {activeBoard && (
-          <div className={styles.TitleWrapper}>
-            <p className={styles.TitleName}>{activeBoard.name}</p>
+          <div className="relative flex gap-2.5">
+            <p className="ml-2.5 text-lg font-semibold">{activeBoard.name}</p>
             <button
               type="button"
               onClick={() => setIsOpenThumbBoard(!isOpenThumbBoard)}
@@ -48,16 +47,16 @@ function Header() {
           </div>
         )}
 
-        <div className={styles.ButtonWrapper}>
+        <div className="relative">
           {!isOpenAddBoard && !isOpenEditBoard && (
             <button
-              className={styles.HeaderButton}
+              className="flex justify-center items-center border border-solid border-[#8990a7] py-2 px-4 rounded hover:bg-[#8990a7] text-[#353845] hover:text-[#f6f7f9]"
               color="dark"
               type="button"
               onClick={() => setIsOpenAddBoard(!isOpenAddBoard)}
             >
               <FiPlus width={24} />
-              <p>Create new desk</p>
+              <p className="text-sm font-semibold ml-2">Create new desk</p>
             </button>
           )}
           {isOpenAddBoard && (
@@ -74,26 +73,26 @@ function Header() {
           )}
         </div>
       </div>
-      <div className={styles.ButtonContainer}>
+      <div className="flex item-center gap-2.5">
         <button
-          className={[styles.HeaderButton, styles.HeaderButtonDark].join(" ")}
+          className="flex justify-center items-center bg-[#555b74] border border-solid border-[#8990a7] py-2 px-4 rounded hover:bg-[#8990a7] text-[#f6f7f9] hover:text-[#f6f7f9]"
           type="button"
         >
           <FaArrowRotateLeft width={24} />
 
-          <p className="HeaderButtonText">History</p>
+          <p className="text-sm font-semibold ml-2">History</p>
         </button>
         {activeBoard && (
-          <div className={styles.ButtonWrapper}>
+          <div className="relative w-[158px]">
             {!isOpenAddList ? (
               <button
-                className={styles.HeaderButton}
+                className="flex justify-center items-center border border-solid border-[#8990a7] py-2 px-4 rounded hover:bg-[#8990a7] text-[#353845] hover:text-[#f6f7f9]"
                 color="dark"
                 type="button"
                 onClick={() => setIsOpenAddList(!isOpenAddList)}
               >
                 <FiPlus width={24} />
-                <p>Create new list</p>
+                <p className="text-sm font-semibold ml-2">Create new list</p>
               </button>
             ) : (
               <ListAddContainer

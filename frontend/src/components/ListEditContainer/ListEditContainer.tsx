@@ -1,4 +1,3 @@
-import styles from "./ListEditContainer.module.css";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { GetList } from "../../types/list.types";
@@ -35,11 +34,14 @@ function ListEditContainer({ list, close }: TaskItemProps) {
 
   return (
     <>
-      <div className={styles.Wrapper} onClick={handleBackdropClick}></div>
+      <div
+        className="fixed top-0 left-0 w-screen h-screen bg-[#00000030] z-20"
+        onClick={handleBackdropClick}
+      ></div>
       {!isEdit ? (
-        <div className={styles.ListChangeWrapper}>
+        <div className="absolute top-0 right-[15px] w-[90px] flex flex-col gap-1 rounded bg-[#e1e1e1] py-1.5 px-2 z-30">
           <button
-            className={styles.ListEditButton}
+            className="bg-[#e1e1e1] border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
             type="button"
             onClick={() => {
               setIsEdit(!isEdit);
@@ -48,7 +50,7 @@ function ListEditContainer({ list, close }: TaskItemProps) {
             Edit
           </button>
           <button
-            className={styles.ListEditButton}
+            className="bg-[#e1e1e1] border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
             type="button"
             onClick={() => {
               dispatch(deleteList(list.id));
@@ -59,14 +61,15 @@ function ListEditContainer({ list, close }: TaskItemProps) {
           </button>
         </div>
       ) : (
-        <div className={styles.ListEditWrapper}>
+        <div className="absolute top-1 right-[15px] w-[180px] flex flex-col gap-2 rounded bg-[#e1e1e1] py-1.5 px-2 z-30">
           <input
+            maxLength={20}
             className="h-6 bg-gray-300 border border-gray-400 text-gray-900 text-m focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             value={newListName}
             onChange={(e) => setNewListName(e.target.value)}
           />
           <button
-            className={styles.ListEditButton}
+            className="bg-[#e1e1e1] border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
             type="button"
             onClick={() => {
               if (!newListName) {

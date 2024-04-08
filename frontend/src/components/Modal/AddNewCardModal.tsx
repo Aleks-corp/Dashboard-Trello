@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
-import styles from "./AddNewCardModal.module.css";
 import { addTask } from "../../redux/boards/task.thunk";
 import MySelect from "../ReactSelect/MySelect";
 import { customSelectStyles } from "../TaskItem/selectStyles";
@@ -47,37 +46,42 @@ function AddNewCardModal({ list, clearListName }: List) {
   }
 
   return (
-    <div className={styles.AddTaskContainer}>
-      <p className={styles.TaskTitle}>Add Card</p>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Status:</p>{" "}
-        <span className={styles.TaskTextAccent}>{list}</span>
+    <div className="px-8 py-4">
+      <p className="text-2xl font-semibold mb-2">Add Card</p>
+      <div className="flex items-center mb-4">
+        <p className="text-lg font-medium">Status:</p>
+        <span className="text-lg font-semibold ml-16">{list}</span>
       </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Task name:</p>
+      <div className="flex items-center mb-4">
+        <p className="text-lg font-medium">Task name:</p>
         <input
-          className={styles.TaskInput}
+          minLength={3}
+          maxLength={20}
+          className="text-base font-medium ml-8 px-1 w-[200px] border border-solid border-[#8990a7] rounded focus:border-2"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
           }}
         />
       </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Description:</p>
+      <div className="flex mb-4">
+        <p className="text-lg font-medium">Description:</p>
         <textarea
-          className={styles.TaskTextArea}
+          minLength={6}
+          maxLength={250}
+          className="text-base font-medium ml-6 p-1 w-[200px] h-[100px] border border-solid border-[#8990a7] rounded focus:border-2 focus:outline-none"
           value={description}
           onChange={(e) => {
             setDescription(e.target.value);
           }}
         />
       </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Priority:</p>
-        <div className={styles.SelectBox}>
+      <div className="flex items-center mb-4">
+        <p className="text-lg font-medium">Priority:</p>
+        <div className="flex ml-14 w-[200px]">
           <MySelect
             name="priority"
+            menuPlacement="top"
             defaultValue={selectOptions[0]}
             options={selectOptions}
             styles={customSelectStyles}
@@ -89,7 +93,7 @@ function AddNewCardModal({ list, clearListName }: List) {
       </div>
 
       <button
-        className={styles.AddTaskBtn}
+        className="ml-[255px] py-1 px-4 text-base font-medium border border-solid border-[#8990a7] rounded hover:bg-[#8990a7] hover:text-[#f6f7f9]"
         type="button"
         onClick={() => sendTask()}
       >
