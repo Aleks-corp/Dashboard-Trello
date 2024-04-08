@@ -1,5 +1,4 @@
 import { useAppSelector } from "../../redux/hooks";
-import styles from "./Lists.module.css";
 import { selectBoard } from "../../redux/selectors";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
@@ -13,10 +12,10 @@ function List() {
   return (
     <>
       {activeboard && activeboard.lists.length !== 0 && (
-        <div className={styles.TasksListContainer}>
-          <ul className={styles.TasksLists}>
+        <div className="flex item-center w-full h-calclisth max-w-7xl my-o mx-auto pt-4 px-7 overflow-hidden">
+          <ul className="flex gap-4 w-full  overflow-x-auto">
             {activeboard.lists.map((item) => (
-              <li className={styles.TasksListsItem} key={item.id}>
+              <li className="relative w-60 flex-240" key={item.id}>
                 <TasksList
                   list={item}
                   lists={activeboard.lists.map((item) => item.name)}

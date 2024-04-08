@@ -2,7 +2,6 @@ import { FiMoreVertical } from "react-icons/fi";
 import { FiCalendar } from "react-icons/fi";
 import { GoDotFill } from "react-icons/go";
 import { format } from "date-fns";
-import styles from "./TaskItem.module.css";
 import { OptionType, TaskItemProps } from "../../types/task-item";
 import { PriorityColor } from "../../constants/constants";
 import { customSelectStyles } from "./selectStyles";
@@ -27,7 +26,7 @@ function TaskItem({ item, list, itemList }: TaskItemProps) {
   }));
 
   return (
-    <div className={styles.TaskContainer}>
+    <div className="relative w-full">
       {isOpen && (
         <TaskEditContainer
           task={item}
@@ -36,20 +35,22 @@ function TaskItem({ item, list, itemList }: TaskItemProps) {
           setIsTaskOpen={setIsTaskOpen}
         />
       )}
-      <div className={styles.TaskNameContainer}>
-        <p className={styles.TaskName}>{item.name}</p>
+      <div className="flex justify-between items-center w-full py-1">
+        <p className="font-semibold w-[90%] overflow-hidden">{item.name}</p>
         <button type="button" onClick={() => setIsOpen(!isOpen)}>
           <FiMoreVertical />
         </button>
       </div>
-      <p className={styles.TaskDesc}>{item.description}</p>
-      <div className={styles.TaskDateWrapper}>
+      <p className="text-xs font-normal mb-3 text-[#909090]">
+        {item.description}
+      </p>
+      <div className="flex items-center mb-3">
         <FiCalendar size={18} />
-        <p className={styles.TaskDate}>
+        <p className="font-medium text-[#909090] ml-2">
           {format(new Date(item.created_at), "EEE, dd MMM")}
         </p>
       </div>
-      <div className={styles.TaskPriorityWrapper}>
+      <div className="inline-flex items-center py-1 px-2 rounded-3xl bg-[#516a7a30] mb-3">
         <GoDotFill
           color={
             item.priority === "low"
@@ -59,7 +60,9 @@ function TaskItem({ item, list, itemList }: TaskItemProps) {
                 : PriorityColor.medium
           }
         />
-        <p className={styles.TaskPriority}>{item.priority}</p>
+        <p className="inline-block ml-1 font-medium text-[#606060]">
+          {item.priority}
+        </p>
       </div>
       <MySelect
         name="taskList"

@@ -1,6 +1,5 @@
 import { GetTask } from "../../types/tasks.types";
 import { format } from "date-fns";
-import styles from "./TaskModal.module.css";
 
 interface Task {
   task: GetTask;
@@ -10,40 +9,43 @@ interface Task {
 
 function TaskModal({ task, itemList, edit }: Task) {
   return (
-    <div className={styles.TaskContainer}>
-      <div className={styles.Wrapper}>
-        <div>
-          <p className={styles.TaskTitle}>{task.name}</p>
-          <div className={styles.TaskTextBox}>
-            <p className={styles.TaskText}>Status:</p>
-            <span className={styles.TaskTextAccent}>{itemList}</span>
-          </div>
-          <div className={styles.TaskTextBox}>
-            <p className={styles.TaskText}>Due Date:</p>
-            <span className={styles.TaskTextAccent}>
-              {format(new Date(task.created_at), "EEE, dd MMM")}
-            </span>
-          </div>
-          <div className={styles.TaskTextBox}>
-            <p className={styles.TaskText}>Priority:</p>
-            <span className={styles.TaskTextAccent}>{task.priority}</span>
-          </div>
-          <div className={styles.TaskTextBox}>
-            <p className={styles.TaskText}>Description:</p>
-            <div className={styles.TaskDescriptionAccent}>
-              {task.description}
-            </div>
-          </div>
+    <div className="flex w-[650px]">
+      <div className="w-[60%] px-8 py-4">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-2xl font-semibold mb-2">{task.name}</p>{" "}
+          <button
+            className="py-1 px-4 text-base font-medium border border-solid border-[#8990a7] rounded hover:bg-[#8990a7] hover:text-[#f6f7f9]"
+            type="button"
+            onClick={() => {
+              edit();
+            }}
+          >
+            Edit
+          </button>
         </div>
-        <button
-          className={styles.TaskEditButton}
-          type="button"
-          onClick={() => {
-            edit();
-          }}
-        >
-          Edit
-        </button>
+        <div className="flex items-center mb-2">
+          <p className="text-lg font-medium">Status:</p>
+          <span className="font-semibold ml-16">{itemList}</span>
+        </div>
+        <div className="flex items-center mb-2">
+          <p className="text-lg font-medium">Due Date:</p>
+          <span className="font-semibold ml-10">
+            {format(new Date(task.created_at), "EEE, dd MMM")}
+          </span>
+        </div>
+        <div className="flex items-center mb-2">
+          <p className="text-lg font-medium">Priority:</p>
+          <span className="font-semibold ml-[58px]">{task.priority}</span>
+        </div>
+        <div className="flex mb-4">
+          <p className="text-lg font-medium">Description:</p>
+          <p className="font-semibold ml-5 max-w-[230px] max-h-[180px] p-1 overflow-auto border border-solid border-[#8990a7] rounded">
+            {task.description}
+          </p>
+        </div>
+      </div>
+      <div className="bg-[#8890a0] w-[40%] px-8 py-4">
+        <p className="text-2xl font-semibold  text-[#f6f7f9]">History</p>
       </div>
     </div>
   );

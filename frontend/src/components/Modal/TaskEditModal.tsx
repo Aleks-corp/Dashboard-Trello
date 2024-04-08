@@ -2,7 +2,6 @@ import { useState } from "react";
 import { GetTask } from "../../types/tasks.types";
 import MySelect from "../ReactSelect/MySelect";
 import { customSelectStyles } from "../TaskItem/selectStyles";
-import styles from "./TaskModal.module.css";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateTask } from "../../redux/boards/task.thunk";
 import { closeModal } from "../../redux/modal/modalSlice";
@@ -59,67 +58,78 @@ function TaskEditModal({ task, lists, itemList }: Task) {
   }
 
   return (
-    <div className={styles.TaskContainer}>
-      <p className={styles.TaskTitle}>Edit Task</p>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Task name:</p>
-        <input
-          className={styles.TaskInput}
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-        />
-      </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Description:</p>
-        <textarea
-          className={styles.TaskTextArea}
-          value={description}
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-        />
-      </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>Priority:</p>
-        <div className={styles.SelectBox}>
-          <MySelect
-            name="priority"
-            defaultValue={selectOptions.filter(
-              (item) => item.value === priority
-            )}
-            options={selectOptions}
-            styles={customSelectStyles}
-            onChange={(selectedOption) => {
-              selectedOption && setPriority(selectedOption.value);
+    <div className="flex w-[650px]">
+      <div className="w-[60%] pl-8 py-4">
+        <p className="text-2xl font-semibold mb-2">Edit Task</p>
+        <div className="flex items-center mb-4">
+          <p className="text-lg font-medium">Task name:</p>
+          <input
+            minLength={3}
+            maxLength={20}
+            className="text-base font-medium ml-8 px-1 w-[200px] border border-solid border-[#8990a7] rounded focus:border-2"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
             }}
           />
         </div>
-      </div>
-      <div className={styles.TaskTextBox}>
-        <p className={styles.TaskText}>List:</p>
-        <div className={styles.SelectBox}>
-          <MySelect
-            name="list"
-            defaultValue={selectOptionsList.filter(
-              (item) => item.value === itemList
-            )}
-            options={selectOptionsList}
-            styles={customSelectStyles}
-            onChange={(selectedOption) => {
-              selectedOption && setList(selectedOption.value);
+        <div className="flex mb-4">
+          <p className="text-lg font-medium">Description:</p>
+          <textarea
+            minLength={6}
+            maxLength={250}
+            className="text-base font-medium ml-6 p-1 w-[200px] h-[100px] border border-solid border-[#8990a7] rounded focus:border-2 focus:outline-none"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
             }}
           />
         </div>
+        <div className="flex items-center mb-4">
+          <p className="text-lg font-medium">Priority:</p>
+          <div className="flex ml-14 w-[200px]">
+            <MySelect
+              name="priority"
+              menuPlacement="top"
+              defaultValue={selectOptions.filter(
+                (item) => item.value === priority
+              )}
+              options={selectOptions}
+              styles={customSelectStyles}
+              onChange={(selectedOption) => {
+                selectedOption && setPriority(selectedOption.value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex items-center mb-4">
+          <p className="text-lg font-medium">List:</p>
+          <div className="flex ml-[88px] w-[200px]">
+            <MySelect
+              name="list"
+              menuPlacement="top"
+              defaultValue={selectOptionsList.filter(
+                (item) => item.value === itemList
+              )}
+              options={selectOptionsList}
+              styles={customSelectStyles}
+              onChange={(selectedOption) => {
+                selectedOption && setList(selectedOption.value);
+              }}
+            />
+          </div>
+        </div>
+        <button
+          className="ml-[255px] py-1 px-4 text-base font-medium border border-solid border-[#8990a7] rounded hover:bg-[#8990a7] hover:text-[#f6f7f9]"
+          type="button"
+          onClick={() => sendTask()}
+        >
+          Save
+        </button>
       </div>
-      <button
-        className={styles.AddTaskBtn}
-        type="button"
-        onClick={() => sendTask()}
-      >
-        Save
-      </button>
+      <div className="bg-[#8890a0] w-[40%] pr-8 py-4">
+        <p className="text-2xl font-semibold ml-8 text-[#f6f7f9]">History</p>
+      </div>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { FiPlus } from "react-icons/fi";
 import { useAppDispatch } from "../../redux/hooks";
 import TaskItem from "../TaskItem/TaskItem";
-import styles from "./TasksList.module.css";
 import { openModal } from "../../redux/modal/modalSlice";
 import { useState } from "react";
 import { FiMoreVertical } from "react-icons/fi";
@@ -23,29 +22,30 @@ function TasksList({ list, lists, setListName }: ListProp) {
       {isOpen && (
         <ListEditContainer list={list} close={() => setIsOpen(false)} />
       )}
-      <div className={styles.ListNameContainer}>
-        <p className={styles.ListsItemText}>{list.name}</p>
+      <div className="flex justify-between items-center w-full py-2 border-t-2 border-b-2 border-[#99999990] rounded-sm mb-2">
+        <p className="font-base font-semibold">{list.name}</p>
         <button type="button" onClick={() => setIsOpen(!isOpen)}>
           <FiMoreVertical />
         </button>
       </div>
 
       <button
-        className={styles.TasksListsAddButton}
+        className="flex justify-center items-center py-2 border border-dashed border-[#80808080] rounded w-full mb-2 hover:bg-[#8990a7] text-[#353845] hover:text-[#f6f7f9]"
         type="button"
         onClick={() => {
           dispatch(openModal());
           setListName(list.name);
         }}
       >
-        <span className={styles.TasksListsIconWrapper}>
-          <FiPlus width={24} />
-        </span>
-        Add new card
+        <FiPlus width={24} />
+        <p className="font-base font-medium ml-2">Add new card</p>
       </button>
-      <ul className={styles.TaskList}>
+      <ul className="flex flex-col gap-2">
         {list.tasks.map((task) => (
-          <li className={styles.TaskListItem} key={task.id}>
+          <li
+            className="w-full py-3 px-2 border border-[#80808080] rounded"
+            key={task.id}
+          >
             <TaskItem item={task} list={lists} itemList={list.name} />
           </li>
         ))}
