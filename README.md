@@ -2,19 +2,25 @@
 
 ## Run application using docker
 
-```
-$ docker-compose up --build
-```
-
-## Installation
+If you use docker - run command:
 
 ```
-$ yarn
+ docker-compose up --build
+```
+
+This command create postgres-bd, backend and frontend.
+
+## Installation by clone repository
+
+If you clone this repositiry - run this command:
+
+```
+ yarn
 ```
 
 ## Running application
 
-### # config env file
+### # config env file for backend
 
 ```
 ENV POSTGRES_HOST=localhost
@@ -24,20 +30,20 @@ ENV POSTGRES_PASSWORD=postgres
 ENV POSTGRES_DB=board_bd
 ```
 
-### # run frontend
+### # config env file for frontend
 
 ```
-$ yarn dev
+ENV BASE_URL=http://localhost:3000
 ```
 
-### # run backend
+### # Then run backend
 
 ```
-$ yarn server
+ yarn server
 ```
 
-### # run both(frontend + backend)
+### # And run frontend
 
 ```
-$ yarn start:dev
+ yarn dev
 ```
