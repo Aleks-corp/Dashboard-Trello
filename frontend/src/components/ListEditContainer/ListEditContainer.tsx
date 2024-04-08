@@ -61,7 +61,7 @@ function ListEditContainer({ list, close }: TaskItemProps) {
       ) : (
         <div className={styles.ListEditWrapper}>
           <input
-            className="h-6 bg-gray-300 border border-gray-400 text-gray-900 text-m rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="h-6 bg-gray-300 border border-gray-400 text-gray-900 text-m focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             value={newListName}
             onChange={(e) => setNewListName(e.target.value)}
           />
