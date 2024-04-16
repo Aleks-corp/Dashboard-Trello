@@ -13,10 +13,14 @@ import {
 import { TaskService } from './task.service';
 import { createTaskDto, updateTaskDto } from './task.dto';
 import { Task } from './task.entity';
+import { ActionLogService } from 'src/action-log/action-log.service';
 
 @Controller('tasks')
 export class TaskController {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(
+    private readonly taskService: TaskService,
+    private readonly actionLogService: ActionLogService,
+  ) {}
 
   @Get()
   getTasks(): Promise<Task[]> {
@@ -37,7 +41,9 @@ export class TaskController {
   @Post()
   @HttpCode(201)
   async create(@Body() task: createTaskDto): Promise<Task> {
-    return await this.taskService.newTask(task);
+    const newTask = await this.taskService.newTask(task);
+    await this.actionLogService.logAction('Task Created', newTask);
+    return await this.taskService.getTaskById(newTask.id.toString());
   }
 
   @Patch(':id')
@@ -45,7 +51,23 @@ export class TaskController {
   async patchOne(@Param('id') id: string, @Body() newTask: updateTaskDto) {
     const task = await this.taskService.getTaskById(id);
     if (task) {
-      return await this.taskService.updateTaskById(id, newTask);
+      if (task.name !== newTask.name) {
+        await this.actionLogService.logAction('Updated task name', task);
+      }
+      if (task.description !== newTask.description) {
+        await this.actionLogService.logAction('Updated task description', task);
+      }
+      if (task.priority !== newTask.priority) {
+        await this.actionLogService.logAction('Updated task priority', task);
+      }
+      if (task.list.name !== newTask.list) {
+        await this.actionLogService.logAction(
+          `Moved to ${newTask.list} list`,
+          task,
+        );
+      }
+      const updatedTask = await this.taskService.updateTaskById(id, newTask);
+      return updatedTask;
     } else {
       throw new NotFoundException('Task not found');
     }
@@ -54,8 +76,9 @@ export class TaskController {
   @Delete(':id')
   @Bind(Param('id'))
   async deleteOne(@Param('id') id: string): Promise<string> {
-    const { affected } = await this.taskService.deleteTaskById(id);
-    if (affected) {
+    const task = await this.taskService.deleteTaskById(id);
+    if (task) {
+      await this.actionLogService.deleteLogsByTaskId(task);
       return 'Task deleted';
     } else {
       throw new NotFoundException('Task not found');

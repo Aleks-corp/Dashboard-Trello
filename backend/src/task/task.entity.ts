@@ -1,11 +1,13 @@
+import { ActionLog } from 'src/action-log/action-log.entity';
 import { List } from 'src/list/list.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
+  OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 export enum TaskPriority {
@@ -30,6 +32,9 @@ export class Task {
 
   @Column()
   priority: TaskPriority;
+
+  @OneToMany(() => ActionLog, (log) => log.task, { cascade: true })
+  actionLogs: ActionLog[];
 
   @CreateDateColumn()
   created_at: Date;

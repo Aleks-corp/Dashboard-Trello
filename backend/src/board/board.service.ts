@@ -12,7 +12,7 @@ export class BoardService {
 
   async getBoards(): Promise<Board[]> {
     return await this.boardRepository.find({
-      relations: ['lists', 'lists.tasks'],
+      relations: ['lists', 'lists.tasks', 'lists.tasks.actionLogs'],
     });
   }
 
