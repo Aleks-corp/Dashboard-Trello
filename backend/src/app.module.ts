@@ -4,6 +4,7 @@ import { TaskModule } from './task/task.module';
 import 'dotenv/config';
 import { ListModule } from './list/list.module';
 import { BoardModule } from './board/board.module';
+import { LogModule } from './action-log/action-log.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { BoardModule } from './board/board.module';
     TaskModule,
     ListModule,
     BoardModule,
+    LogModule,
   ],
 })
 export class AppModule {}

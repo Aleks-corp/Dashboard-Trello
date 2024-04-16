@@ -15,7 +15,9 @@ export class TaskService {
   ) {}
 
   async getTasks(): Promise<Task[]> {
-    return await this.taskRepository.find({ relations: ['list'] });
+    return await this.taskRepository.find({
+      relations: ['list', 'actionLogs'],
+    });
   }
 
   async newTask(taskData: createTaskDto): Promise<Task> {
@@ -34,14 +36,15 @@ export class TaskService {
     newTask.priority = priority;
     newTask.list = foundList;
 
-    return await this.taskRepository.save(newTask);
+    const task = await this.taskRepository.save(newTask);
+    return task;
   }
 
   async getTaskById(strId: string): Promise<Task> {
     const id = Number(strId);
     return await this.taskRepository.findOne({
       where: { id },
-      relations: ['list'],
+      relations: ['list', 'actionLogs'],
     });
   }
 
@@ -49,7 +52,7 @@ export class TaskService {
     const id = Number(strId);
     const task = await this.taskRepository.findOne({
       where: { id },
-      relations: ['list'],
+      relations: ['list', 'actionLogs'],
     });
     if (newTask.list) {
       const list = await this.listRepository.findOne({
@@ -64,11 +67,24 @@ export class TaskService {
     newTask.description && (task.description = newTask.description);
     newTask.priority && (task.priority = newTask.priority);
 
-    await this.taskRepository.save(task);
-    return task;
+    const updatedTask = await this.taskRepository.save(task);
+
+    return updatedTask;
   }
 
-  async deleteTaskById(id: string) {
-    return await this.taskRepository.delete(id);
+  async deleteTaskById(strId: string) {
+    const id = Number(strId);
+    const task = await this.taskRepository.findOne({
+      where: { id },
+    });
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+    const { affected } = await this.taskRepository.delete(id);
+    if (affected) {
+      return task;
+    } else {
+      throw new NotFoundException('Task not found');
+    }
   }
 }
