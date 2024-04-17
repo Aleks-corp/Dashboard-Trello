@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from './list.entity';
@@ -26,7 +26,7 @@ export class ListService {
     });
 
     if (!foundBoard) {
-      throw new Error('Board not found');
+      throw new NotFoundException('Board not found');
     }
 
     const newList = new List();
