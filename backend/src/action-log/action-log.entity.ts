@@ -3,9 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  ManyToOne,
 } from 'typeorm';
-import { Task } from '../task/task.entity';
 
 @Entity()
 export class ActionLog {
@@ -13,10 +11,13 @@ export class ActionLog {
   id: number;
 
   @Column()
-  actionType: string;
+  entityType: string;
 
-  @ManyToOne(() => Task, (task) => task.actionLogs, { onDelete: 'CASCADE' })
-  task: Task;
+  @Column()
+  entityId: number;
+
+  @Column()
+  actionType: string;
 
   @CreateDateColumn()
   createdAt: Date;

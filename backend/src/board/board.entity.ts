@@ -1,4 +1,4 @@
-import { List } from 'src/list/list.entity';
+import { List } from '../list/list.entity';
 import {
   Column,
   PrimaryGeneratedColumn,
