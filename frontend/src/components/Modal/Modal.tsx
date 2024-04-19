@@ -4,6 +4,7 @@ import { closeModal } from "../../redux/modal/modalSlice";
 import { selectIsModalOpen } from "../../redux/selectors";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { IoClose } from "react-icons/io5";
+import { clearTaskLogs } from "../../redux/action-logs/logsSlice";
 
 const modalRoot = document.querySelector("#modal-root") as HTMLElement;
 
@@ -15,10 +16,18 @@ interface PropChildren {
 export default function Modal({ children, clearModal }: PropChildren) {
   const isOpen = useAppSelector(selectIsModalOpen);
   const dispatch = useAppDispatch();
+
+  function closeAction() {
+    dispatch(closeModal());
+    dispatch(clearTaskLogs());
+    clearModal();
+  }
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         dispatch(closeModal());
+        dispatch(clearTaskLogs());
         clearModal();
       }
     };
@@ -31,8 +40,7 @@ export default function Modal({ children, clearModal }: PropChildren) {
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
-      dispatch(closeModal());
-      clearModal();
+      closeAction();
     }
   };
   if (!isOpen) {
@@ -49,10 +57,7 @@ export default function Modal({ children, clearModal }: PropChildren) {
         <button
           className="absolute top-0 right-3 flex justify-center items-center rounded-md p-2 text-white hover:text-[#8990a7]"
           type="button"
-          onClick={() => {
-            dispatch(closeModal());
-            clearModal();
-          }}
+          onClick={closeAction}
         >
           <IoClose size={24} />
         </button>

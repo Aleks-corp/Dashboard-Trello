@@ -42,6 +42,10 @@ function AddNewCardModal({ list, clearListName }: List) {
       dispatch(closeModal());
       toast.success("Task created successful");
       clearListName();
+    } else {
+      !name && toast.error("Please fill name field");
+      !description && toast.error("Please fill description field");
+      !priority && toast.error("Please choose priority");
     }
   }
 

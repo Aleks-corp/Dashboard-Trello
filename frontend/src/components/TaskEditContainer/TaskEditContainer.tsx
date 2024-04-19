@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { GetTask } from "../../types/tasks.types";
 import { useAppDispatch } from "../../redux/hooks";
 import toast from "react-hot-toast";
+import { fetchTaskHistory } from "../../redux/action-logs/logs.thunk";
 
 interface TaskItemProps {
   task: GetTask;
@@ -50,6 +51,7 @@ function TaskEditContainer({
           type="button"
           onClick={() => {
             dispatch(openModal());
+            dispatch(fetchTaskHistory(task.id));
             setIsTaskOpen(true);
             close();
           }}
@@ -61,6 +63,7 @@ function TaskEditContainer({
           type="button"
           onClick={() => {
             dispatch(openModal());
+            dispatch(fetchTaskHistory(task.id));
             setIsEditOpen(true);
             close();
           }}

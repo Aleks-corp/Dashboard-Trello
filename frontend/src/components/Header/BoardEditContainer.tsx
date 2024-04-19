@@ -1,15 +1,17 @@
-import { deleteBoard } from "../../redux/boards/board.thunk";
+import { deleteBoard, fetchBoardById } from "../../redux/boards/board.thunk";
 import { useEffect } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import toast from "react-hot-toast";
+import { GetBoards } from "../../types/board.types";
 
 interface TaskItemProps {
   id: string;
+  boardList: GetBoards[];
   onEdit: () => void;
   onClose: () => void;
 }
 
-function BoardEditContainer({ id, onEdit, onClose }: TaskItemProps) {
+function BoardEditContainer({ id, boardList, onEdit, onClose }: TaskItemProps) {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -52,6 +54,10 @@ function BoardEditContainer({ id, onEdit, onClose }: TaskItemProps) {
           type="button"
           onClick={() => {
             dispatch(deleteBoard(id));
+            if (boardList.length !== 0 && id !== boardList[0].id) {
+              dispatch(fetchBoardById(boardList[0].id));
+            }
+
             toast.success("Board deleted successful");
             onClose();
           }}

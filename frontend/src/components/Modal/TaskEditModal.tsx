@@ -2,10 +2,11 @@ import { useState } from "react";
 import { GetTask } from "../../types/tasks.types";
 import MySelect from "../ReactSelect/MySelect";
 import { customSelectStyles } from "../TaskItem/selectStyles";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { updateTask } from "../../redux/boards/task.thunk";
 import { closeModal } from "../../redux/modal/modalSlice";
 import toast from "react-hot-toast";
+import { selectTaskLogs } from "../../redux/selectors";
 
 interface Task {
   task: GetTask;
@@ -14,6 +15,7 @@ interface Task {
 }
 
 function TaskEditModal({ task, lists, itemList }: Task) {
+  const logs = useAppSelector(selectTaskLogs);
   const dispatch = useAppDispatch();
   const [name, setName] = useState(task.name);
   const [description, setDescription] = useState(task.description);
@@ -53,7 +55,13 @@ function TaskEditModal({ task, lists, itemList }: Task) {
           list,
         })
       );
+      toast.success("Task updated successful");
       dispatch(closeModal());
+    } else {
+      !name && toast.error("Please fill name field");
+      !list && toast.error("Please choose list field");
+      !description && toast.error("Please fill description field");
+      !priority && toast.error("Please choose priority");
     }
   }
 
@@ -129,6 +137,13 @@ function TaskEditModal({ task, lists, itemList }: Task) {
       </div>
       <div className="bg-[#8890a0] w-[40%] pr-8 py-4">
         <p className="text-2xl font-semibold ml-8 text-[#f6f7f9]">History</p>
+        {logs.length !== 0 && (
+          <ul>
+            {logs.map((log) => (
+              <li key={log.id}>{log.actionType}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

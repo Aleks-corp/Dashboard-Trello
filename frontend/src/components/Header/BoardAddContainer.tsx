@@ -49,6 +49,7 @@ function BoardAddContainer({ board, onClose }: TaskItemProps) {
             if (!board.name && !board.id) {
               dispatch(addBoard({ name: newBoardName }));
               toast.success("Board created successful");
+              onClose();
               return;
             }
             if (newBoardName === board.name) {
