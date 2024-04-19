@@ -2,8 +2,9 @@ import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { GetBoards } from "../../types/board.types";
-import { setSelectedBoard } from "../../redux/boards/boardsSlice";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { fetchBoardById } from "../../redux/boards/board.thunk";
+import { selectBoard } from "../../redux/selectors";
 
 function classNames(...classes: (string | undefined | null | false)[]) {
   return classes.filter(Boolean).join(" ");
@@ -15,21 +16,38 @@ interface BoardsProps {
 
 export default function HeaderBoardSelect({ boards }: BoardsProps) {
   const dispatch = useAppDispatch();
-  const [selected, setSelected] = useState(boards[0]);
+  const activeBoard = useAppSelector(selectBoard);
+  const [selected, setSelected] = useState(activeBoard || boards[0]);
+
   useEffect(() => {
-    if (selected) {
-      dispatch(setSelectedBoard(selected));
+    if (!activeBoard && selected) {
+      dispatch(fetchBoardById(selected.id));
     }
-  }, [dispatch, selected]);
+  }, [activeBoard, dispatch, selected]);
+
+  useEffect(() => {
+    if (activeBoard) {
+      setSelected(activeBoard);
+    }
+  }, [activeBoard]);
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox
+      value={selected}
+      onChange={(value) => {
+        if (selected.id !== value.id) {
+          setSelected(value), dispatch(fetchBoardById(value.id));
+        }
+      }}
+    >
       {({ open }) => (
         <>
           <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900"></Listbox.Label>
           <div className="relative">
             <Listbox.Button className="relative w-full bg-[#e1e1e1] cursor-poiter hover:bg-[#d6d8e1] rounded-md py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:bg-[#d6d8e1] focus:ring-2 focus:ring-[#8990a7] sm:text-sm sm:leading-6">
               <span className="flex items-center">
-                <span className="ml-3 block truncate">{selected.name}</span>
+                {selected && (
+                  <span className="ml-3 block truncate">{selected.name}</span>
+                )}
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon

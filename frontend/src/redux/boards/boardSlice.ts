@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { BoardsState } from "../../types/state.types";
-import { GetBoards } from "../../types/board.types";
+import { GetBoards, GetBoard } from "../../types/board.types";
 
 export const handleFulfilledBoard = (
   state: BoardsState,
@@ -9,11 +9,18 @@ export const handleFulfilledBoard = (
   state.boards = action.payload;
 };
 
+export const handleFulfilledBoardById = (
+  state: BoardsState,
+  action: PayloadAction<GetBoard>
+): void => {
+  state.selectedBoard = action.payload;
+};
+
 export const handleFulfilledAddBoard = (
   state: BoardsState,
-  action: PayloadAction<GetBoards>
+  action: PayloadAction<GetBoard>
 ): void => {
-  state.boards.push({ ...action.payload, lists: [] });
+  state.boards.push({ ...action.payload });
   state.selectedBoard = { ...action.payload, lists: [] };
 };
 
@@ -41,7 +48,5 @@ export const handleFulfilledDeleteBoard = (
   if (boardIndex !== -1) {
     state.boards.splice(boardIndex, 1);
   }
-  state.boards.length !== 0
-    ? (state.selectedBoard = state.boards[0])
-    : (state.selectedBoard = null);
+  state.selectedBoard = null;
 };

@@ -9,6 +9,9 @@ import HeaderBoardSelect from "./HeaderSelect";
 import BoardAddContainer from "./BoardAddContainer";
 import BoardEditContainer from "./BoardEditContainer";
 import ListAddContainer from "./ListAddContainer";
+import History from "../History/History";
+import { openLogs } from "../../redux/action-logs/logsSlice";
+import { fetchHistory } from "../../redux/action-logs/logs.thunk";
 
 function Header() {
   const dispatch = useAppDispatch();
@@ -40,6 +43,7 @@ function Header() {
             {isOpenThumbBoard && (
               <BoardEditContainer
                 id={activeBoard.id}
+                boardList={boards}
                 onEdit={() => setIsOpenEditBoard(true)}
                 onClose={() => setIsOpenThumbBoard(false)}
               />
@@ -77,6 +81,9 @@ function Header() {
         <button
           className="flex justify-center items-center bg-[#555b74] border border-solid border-[#8990a7] py-2 px-4 rounded hover:bg-[#8990a7] text-[#f6f7f9] hover:text-[#f6f7f9]"
           type="button"
+          onClick={() => {
+            dispatch(openLogs()), dispatch(fetchHistory());
+          }}
         >
           <FaArrowRotateLeft width={24} />
 
@@ -103,6 +110,7 @@ function Header() {
           </div>
         )}
       </div>
+      <History />
     </header>
   );
 }

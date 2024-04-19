@@ -1,33 +1,17 @@
-import { GetBoards } from "../types/board.types";
-
-export const boardIndexFinder = (
-  boards: GetBoards[],
-  listId: string | undefined
-): number => {
-  if (listId === undefined) {
-    return -1;
-  }
-  const boardIndex = boards.findIndex((item) => {
-    const bool = item.lists.some((i) => i.id === listId);
-    return bool;
-  });
-  return boardIndex;
-};
+import { GetBoard } from "../types/board.types";
 
 export const listIdFinder = (
-  boards: GetBoards[],
+  selectedBoard: GetBoard | null,
   taskId: string | undefined
 ): string | null => {
-  if (taskId === undefined) {
+  if (taskId === undefined || !selectedBoard) {
     return null;
   }
   let listId = null;
-  boards.map((item) => {
-    const list = item.lists.find((i) => {
-      return i.tasks.some((i) => i.id === taskId);
-    });
-    if (list) listId = list.id;
+  const list = selectedBoard.lists.find((i) => {
+    return i.tasks.some((i) => i.id === taskId);
   });
+  if (list) listId = list.id;
 
   return listId;
 };

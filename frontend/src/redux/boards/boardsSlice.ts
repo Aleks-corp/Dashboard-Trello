@@ -1,6 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { BoardsState } from "../../types/state.types";
-import { fetchBoards, addBoard, updateBoard, deleteBoard } from "./board.thunk";
+import {
+  fetchBoards,
+  addBoard,
+  updateBoard,
+  deleteBoard,
+  fetchBoardById,
+} from "./board.thunk";
 import {
   handleFulfilledAddList,
   handleFulfilledDeleteList,
@@ -10,6 +16,7 @@ import { addList, updateList, deleteList } from "./list.thunk";
 import {
   handleFulfilledAddBoard,
   handleFulfilledBoard,
+  handleFulfilledBoardById,
   handleFulfilledDeleteBoard,
   handleFulfilledUpdateBoard,
 } from "./boardSlice";
@@ -20,7 +27,6 @@ import {
   handleFulfilledTaskById,
   handleFulfilledUpdateTasks,
 } from "./taskSlice";
-import { GetBoards } from "../../types/board.types";
 
 const initialState: BoardsState = {
   boards: [],
@@ -46,17 +52,11 @@ const handleFulfilled = (state: BoardsState) => {
 const boardsSlice = createSlice({
   name: "desk",
   initialState: initialState,
-  reducers: {
-    setSelectedBoard: (
-      state: BoardsState,
-      action: PayloadAction<GetBoards>
-    ) => {
-      state.selectedBoard = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoards.fulfilled, handleFulfilledBoard)
+      .addCase(fetchBoardById.fulfilled, handleFulfilledBoardById)
       .addCase(addBoard.fulfilled, handleFulfilledAddBoard)
       .addCase(updateBoard.fulfilled, handleFulfilledUpdateBoard)
       .addCase(deleteBoard.fulfilled, handleFulfilledDeleteBoard)
@@ -76,5 +76,4 @@ const boardsSlice = createSlice({
   },
 });
 
-export const { setSelectedBoard } = boardsSlice.actions;
 export const boardsReducer = boardsSlice.reducer;

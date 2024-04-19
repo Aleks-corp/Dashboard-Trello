@@ -1,3 +1,6 @@
+// import { fetchTaskHistory } from "../../redux/action-logs/logs.thunk";
+import { useAppSelector } from "../../redux/hooks";
+import { selectTaskLogs } from "../../redux/selectors";
 import { GetTask } from "../../types/tasks.types";
 import { format } from "date-fns";
 
@@ -8,11 +11,12 @@ interface Task {
 }
 
 function TaskModal({ task, itemList, edit }: Task) {
+  const logs = useAppSelector(selectTaskLogs);
   return (
     <div className="flex w-[650px]">
       <div className="w-[60%] px-8 py-4">
         <div className="flex items-center justify-between mb-2">
-          <p className="text-2xl font-semibold mb-2">{task.name}</p>{" "}
+          <p className="text-2xl font-semibold mb-2">{task.name}</p>
           <button
             className="py-1 px-4 text-base font-medium border border-solid border-[#8990a7] rounded hover:bg-[#8990a7] hover:text-[#f6f7f9]"
             type="button"
@@ -46,6 +50,13 @@ function TaskModal({ task, itemList, edit }: Task) {
       </div>
       <div className="bg-[#8890a0] w-[40%] px-8 py-4">
         <p className="text-2xl font-semibold  text-[#f6f7f9]">History</p>
+        {logs.length !== 0 && (
+          <ul>
+            {logs.map((log) => (
+              <li key={log.id}>{log.actionType}</li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
