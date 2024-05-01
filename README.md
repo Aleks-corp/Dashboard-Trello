@@ -1,4 +1,10 @@
-# ReactApp(boards)
+# ReactApp(Dashboard-Trello)
+
+### More information
+
+[Backend Readme](./backend/README.md)
+
+[Frontend Readme](./frontend/README.md)
 
 ## Run application using docker
 
@@ -23,17 +29,17 @@ If you clone this repositiry - run this command:
 ### # config env file for backend
 
 ```
-ENV POSTGRES_HOST=localhost
-ENV POSTGRES_PORT=5432
-ENV POSTGRES_USER=postgres
-ENV POSTGRES_PASSWORD=postgres
-ENV POSTGRES_DB=board_bd
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=board_bd
 ```
 
 ### # config env file for frontend
 
 ```
-ENV BASE_URL=http://localhost:3000
+VITE_BASE_URL=http://localhost:3030
 ```
 
 ### # Then run backend

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AddBoard, UpdateBoard } from "../../types/board.types";
+import { setAxiosBaseUrl } from "../../helpers/setAxiosBaseUrl";
 
-axios.defaults.baseURL = "http://localhost:3000";
+const host = await setAxiosBaseUrl();
+axios.defaults.baseURL = host;
 
 export const fetchBoards = createAsyncThunk(
   "boards/fetchBoards",

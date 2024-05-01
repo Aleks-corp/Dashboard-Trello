@@ -1,8 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AddList, UpdateList } from "../../types/list.types";
+import { setAxiosBaseUrl } from "../../helpers/setAxiosBaseUrl";
 
-axios.defaults.baseURL = "http://localhost:3000";
+const host = await setAxiosBaseUrl();
+axios.defaults.baseURL = host;
 
 export const fetchLists = createAsyncThunk(
   "lists/fetchLists",
