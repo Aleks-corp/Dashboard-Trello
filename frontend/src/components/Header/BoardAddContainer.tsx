@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { addBoard, updateBoard } from "../../redux/boards/board.thunk";
 import toast from "react-hot-toast";
@@ -11,10 +11,41 @@ interface TaskItemProps {
 function BoardAddContainer({ board, onClose }: TaskItemProps) {
   const [newBoardName, setNewBoardName] = useState(board.name);
   const dispatch = useAppDispatch();
+
+  const onSubmit = useCallback(() => {
+    if (!newBoardName) {
+      toast.error("Please fill board name");
+      return;
+    }
+    if (!board.name && !board.id) {
+      dispatch(addBoard({ name: newBoardName }));
+      toast.success("Board created successful");
+      onClose();
+      return;
+    }
+    if (newBoardName === board.name) {
+      toast.error("Please change board name");
+      return;
+    }
+    if (board.name && board.id) {
+      dispatch(
+        updateBoard({
+          id: board.id,
+          name: newBoardName,
+        })
+      );
+      toast.success("Board name changed successful");
+      onClose();
+    }
+  }, [board.id, board.name, dispatch, newBoardName, onClose]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         onClose();
+      }
+      if (e.code === "Enter") {
+        onSubmit();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -22,7 +53,7 @@ function BoardAddContainer({ board, onClose }: TaskItemProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, onSubmit]);
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
@@ -41,32 +72,7 @@ function BoardAddContainer({ board, onClose }: TaskItemProps) {
           className="bg-[#e1e1e1] w-[166px] h-9 border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
           color="dark"
           type="button"
-          onClick={() => {
-            if (!newBoardName) {
-              toast.error("Please fill board name");
-              return;
-            }
-            if (!board.name && !board.id) {
-              dispatch(addBoard({ name: newBoardName }));
-              toast.success("Board created successful");
-              onClose();
-              return;
-            }
-            if (newBoardName === board.name) {
-              toast.error("Please change board name");
-              return;
-            }
-            if (board.name && board.id) {
-              dispatch(
-                updateBoard({
-                  id: board.id,
-                  name: newBoardName,
-                })
-              );
-              toast.success("Board name changed successful");
-              onClose();
-            }
-          }}
+          onClick={onSubmit}
         >
           {board.name === "" ? <p>Add new desk</p> : <p>Edit desk</p>}
         </button>

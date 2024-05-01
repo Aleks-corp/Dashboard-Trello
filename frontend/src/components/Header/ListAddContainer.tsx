@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { addList } from "../../redux/boards/list.thunk";
 import toast from "react-hot-toast";
@@ -11,10 +11,30 @@ interface TaskItemProps {
 function ListAddContainer({ boardName, onClose }: TaskItemProps) {
   const [newListName, setNewListName] = useState("");
   const dispatch = useAppDispatch();
+
+  const onSubmit = useCallback(() => {
+    if (!newListName) {
+      toast.error("Please fill list name");
+    }
+    if (newListName) {
+      dispatch(
+        addList({
+          board: boardName,
+          name: newListName,
+        })
+      );
+      toast.success("List created successful");
+      onClose();
+    }
+  }, [boardName, dispatch, newListName, onClose]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         onClose();
+      }
+      if (e.code === "Enter") {
+        onSubmit();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -22,7 +42,7 @@ function ListAddContainer({ boardName, onClose }: TaskItemProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, [onClose, onSubmit]);
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
@@ -41,21 +61,7 @@ function ListAddContainer({ boardName, onClose }: TaskItemProps) {
           className="bg-[#e1e1e1] h-9 border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
           color="dark"
           type="button"
-          onClick={() => {
-            if (!newListName) {
-              toast.error("Please fill list name");
-            }
-            if (newListName) {
-              dispatch(
-                addList({
-                  board: boardName,
-                  name: newListName,
-                })
-              );
-              toast.success("List created successful");
-              onClose();
-            }
-          }}
+          onClick={onSubmit}
         >
           <p>Add new list</p>
         </button>

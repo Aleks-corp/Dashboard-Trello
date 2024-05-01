@@ -1,8 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AddTask, UpdateTask } from "../../types/tasks.types";
+import { setAxiosBaseUrl } from "../../helpers/setAxiosBaseUrl";
 
-axios.defaults.baseURL = "http://localhost:3000";
+const host = await setAxiosBaseUrl();
+axios.defaults.baseURL = host;
 
 export const fetchTaskById = createAsyncThunk(
   "tasks/fetchById",

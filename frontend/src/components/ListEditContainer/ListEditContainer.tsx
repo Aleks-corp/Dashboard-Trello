@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { GetList } from "../../types/list.types";
 import { deleteList, updateList } from "../../redux/boards/list.thunk";
@@ -13,10 +13,28 @@ function ListEditContainer({ list, close }: TaskItemProps) {
   const [isEdit, setIsEdit] = useState(false);
   const [newListName, setNewListName] = useState(list.name);
   const dispatch = useAppDispatch();
+
+  const onSubmit = useCallback(() => {
+    if (!newListName) {
+      toast.error("Please set List Name");
+    }
+    if (newListName === list.name) {
+      toast.error("List Name is the same");
+    }
+    if (newListName && newListName !== list.name) {
+      dispatch(updateList({ id: list.id, name: newListName }));
+      toast.success("List name changed");
+      close();
+    }
+  }, [close, dispatch, list.id, list.name, newListName]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Escape") {
         close();
+      }
+      if (e.code === "Enter") {
+        onSubmit();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -24,7 +42,7 @@ function ListEditContainer({ list, close }: TaskItemProps) {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [close]);
+  }, [close, onSubmit]);
 
   const handleBackdropClick = (event: React.MouseEvent) => {
     if (event.currentTarget === event.target) {
@@ -71,19 +89,7 @@ function ListEditContainer({ list, close }: TaskItemProps) {
           <button
             className="bg-[#e1e1e1] border border-solid border-[#8990a7] rounded py-1 px-1.5 hover:bg-[#8990a7] hover:text-[#e1e1e1]"
             type="button"
-            onClick={() => {
-              if (!newListName) {
-                toast.error("Please set List Name");
-              }
-              if (newListName === list.name) {
-                toast.error("List Name is the same");
-              }
-              if (newListName && newListName !== list.name) {
-                dispatch(updateList({ id: list.id, name: newListName }));
-                toast.success("List name changed");
-                close();
-              }
-            }}
+            onClick={onSubmit}
           >
             Edit
           </button>

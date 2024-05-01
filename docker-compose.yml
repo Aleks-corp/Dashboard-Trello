@@ -16,7 +16,9 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3030:3030"
+    depends_on:
+      - task-bd
 
   frontend:
     build:
@@ -24,3 +26,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
+    depends_on:
+      - backend

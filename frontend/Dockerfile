@@ -3,6 +3,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN yarn install
 COPY . .
-ENV BASE_URL=http://localhost:3000
+ENV VITE_BASE_URL=http://localhost:3030
 EXPOSE 5173
-CMD ["yarn", "dev"]
+CMD ["yarn", "dev-host"]
